@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pro Music Player</title>
+
+    <script
+      src="https://kit.fontawesome.com/66beacb2e2.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      * {
+        margin: 0;
+
+        padding: 0;
+
+        font-family: Arial, Helvetica, sans-serif;
+
+        box-sizing: border-box;
+      }
+
+      .container {
+        width: 100%;
+
+        height: 100vh;
+
+        background: #333;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+      }
+
+      .musicPlayer {
+        background: #ffe0e5;
+
+        width: 400px;
+
+        padding: 25px 35px;
+
+        text-align: center;
+      }
+
+      nav {
+        display: flex;
+
+        justify-content: space-between;
+
+        margin-bottom: 30px;
+      }
+
+      nav .circle {
+        border-radius: 50%;
+
+        width: 40px;
+
+        height: 40px;
+
+        line-height: 40px;
+
+        background: white;
+
+        color: #f53192;
+
+        box-shadow: 0 5px 10px rgba(255, 26, 26, 0.22);
+      }
+
+      .songImg {
+        width: 220px;
+
+        border-radius: 50%;
+
+        border: 8px solid white;
+
+        box-shadow: 0 10px 60px rgba(255, 26, 26, 0.22);
+      }
+
+      .musicPlayer h1 {
+        font-size: 20px;
+
+        font-weight: 400;
+
+        color: #333;
+
+        margin-top: 20px;
+      }
+
+      .musicPlayer p {
+        font-size: 14px;
+
+        color: black;
+      }
+
+      #progressBar {
+        -webkit-appearance: none;
+
+        width: 100%;
+
+        height: 6px;
+
+        background: #f53192;
+
+        border-radius: 4px;
+
+        cursor: pointer;
+
+        margin: 40px 0;
+      }
+
+      #progressBar::-webkit-slider-thumb {
+        background: #f53192;
+
+        width: 30px;
+
+        height: 30px;
+
+        border-radius: 50%;
+
+        border: 8px solid white;
+
+        box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22);
+      }
+
+      .controls {
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+      }
+
+      .controls div {
+        width: 60px;
+
+        height: 60px;
+
+        margin: 20px;
+
+        background: white;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        color: #f53192;
+
+        box-shadow: 0 10px 20px rgba(255, 26, 26, 0.22);
+
+        cursor: pointer;
+      }
+
+      .controls div:nth-child(2) {
+        transform: scale(1.5);
+
+        background: #f53192;
+
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="musicPlayer">
+        <nav>
+          <div class="circle">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+
+          <div class="circle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </nav>
+
+        <img src="Images/468-thumbnail.png" class="songImg" alt="" />
+
+        <h1>I had a felling</h1>
+
+        <p>Luis Fonsi Ft. Daddy Yakan</p>
+
+        <audio id="song">
+          <source
+            src="Images/I Had a Feeling - TrackTribe.mp3"
+            type="audio/mpeg"
+          />
+        </audio>
+
+        <input type="range" value="0" id="progressBar" />
+
+        <div class="controls">
+          <div>
+            <i class="fa-solid fa-backward"> </i>
+          </div>
+
+          <div onclick="playPause()">
+            <i class="fa-solid fa-play" id="ctrlIcon"> </i>
+          </div>
+
+          <div>
+            <i class="fa-solid fa-forward"> </i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let progressBar = document.getElementById("progressBar");
+
+      let ctrlIcon = document.getElementById("ctrlIcon");
+
+      let song = document.getElementById("song");
+
+      song.onloadedmetadata = function () {
+        progressBar.max = song.duration;
+
+        progressBar.value = song.currentTime;
+      };
+
+      function playPause() {
+        if (ctrlIcon.classList.contains("fa-pause")) {
+          song.pause();
+
+          ctrlIcon.classList.remove("fa-pause");
+
+          ctrlIcon.classList.add("fa-play");
+        } else {
+          song.play();
+
+          ctrlIcon.classList.remove("fa-play");
+
+          ctrlIcon.classList.add("fa-pause");
+        }
+      }
+
+      if (song.play()) {
+        setInterval(() => {
+          progressBar.value = song.currentTime;
+        }, 500);
+      }
+      progressBar.onchange = function () {
+        song.play();
+
+        song.currentTime = progressBar.value;
+
+        ctrlIcon.classList.remove("fa-play");
+
+        ctrlIcon.classList.add("fa-pause");
+      };
+    </script>
+  </body>
+</html>
